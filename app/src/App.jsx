@@ -2,6 +2,9 @@ import { useState } from 'react'
 import Header from './Header/Header.jsx'
 import Hero from './Hero/Hero.jsx'
 import Stack from './Stack/Stack.jsx'
+import Projects from './Projects/Projects.jsx' 
+import Footer from './Footer/Footer.jsx'
+import Walkie from './Walkie/Walkie.jsx' 
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,6 +14,9 @@ function App() {
       <Header />
       <Hero />
       <Stack />
+      <Projects />
+      <Footer />
+      <Walkie />
     </>
   )
 }

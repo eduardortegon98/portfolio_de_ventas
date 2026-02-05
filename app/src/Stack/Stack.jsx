@@ -1,36 +1,53 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Code2, BrainCircuit, Bot, Layers3 } from "lucide-react";
+import { Code2, BrainCircuit, Bot, Layers3, Orbit, Globe, Cpu, Atom, Wind, Terminal, Plug } from "lucide-react";
 
 const STACK = [
   {
     key: "intelligence",
-    title: "DEVELOPMENT",
+    title: "DESARROLLO",
     items: [
-      { label: "Web", Icon: Code2 },
-      { label: "AI", Icon: Layers3 },
-      { label: "Electronic Devices", Icon: Code2 },
+      { label: "Web", Icon: Globe },
+  { label: "IA", Icon: BrainCircuit },
+  { label: "Dispositivos Electrónicos", Icon: Cpu },
     ],
   },
   {
     key: "technologies",
-    title: "TECHNOLOGIES",
+    title: "TECNOLOGÍAS",
     items: [
-      { label: "React", Icon: Code2 },
-      { label: "Tailwind CSS", Icon: Layers3 },
-      { label: "Python", Icon: Code2 },
-        { label: "C/C++", Icon: Code2 },
-        { label: "Arduino", Icon: Layers3 },
+       { label: "React", Icon: Atom },
+  { label: "Tailwind CSS", Icon: Wind },
+  { label: "Python", Icon: Terminal },
     ],
   },
-  { key: "predict", title: "PREDICT", items: [{ label: "Models", Icon: BrainCircuit }] },
-  { key: "automation", title: "AI AUTOMATION", items: [{ label: "Workflows", Icon: Bot }] },
+  {
+    key: "predict",
+    title: "PREDICCIÓN",
+    items: [
+      { label: "Modelos", Icon: BrainCircuit },
+      { label: "Análisis de Datos", Icon: Layers3 },
+      { label: "Simulaciones", Icon: Orbit }
+    ],
+  },
+  {
+    key: "automation",
+    title: "AUTOMATIZACIÓN IA",
+    items: [
+      { label: "Integraciones", Icon: Plug },
+      { label: "Agentes", Icon: Bot },
+
+    ],
+  },
 ];
 
 function clamp(n, a, b) {
   return Math.max(a, Math.min(b, n));
 }
 
-const StackCard = React.forwardRef(function StackCard({ title, items, side = "left" }, ref) {
+const StackCard = React.forwardRef(function StackCard(
+  { title, items, side = "left" },
+  ref,
+) {
   // side: "left" | "right" -> para colocar el puerto del lado interno
   const isLeft = side === "left";
 
@@ -59,7 +76,9 @@ const StackCard = React.forwardRef(function StackCard({ title, items, side = "le
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-[11px] font-semibold tracking-[0.24em] text-white/60">{title}</div>
+        <div className="text-[11px] font-semibold tracking-[0.24em] text-white/60">
+          {title}
+        </div>
         <div className="h-px w-16 bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent" />
       </div>
 
@@ -70,8 +89,10 @@ const StackCard = React.forwardRef(function StackCard({ title, items, side = "le
             className="flex items-center gap-3 rounded-xl border border-cyan-300/10 bg-black/30 px-4 py-3
                        transition group-hover:border-cyan-200/15"
           >
-            <div className="grid place-items-center size-10 rounded-xl bg-cyan-400/10 border border-cyan-300/15 text-cyan-100
-                            shadow-[0_0_18px_rgba(34,211,238,0.10)]">
+            <div
+              className="grid place-items-center size-10 rounded-xl bg-cyan-400/10 border border-cyan-300/15 text-cyan-100
+                            shadow-[0_0_18px_rgba(34,211,238,0.10)]"
+            >
               <Icon className="size-6" />
             </div>
             <div className="text-white/90 font-medium">{label}</div>
@@ -92,7 +113,12 @@ function useMeasurePorts(wrapperRef, refs) {
 
     const centerOf = (el) => {
       const r = el.getBoundingClientRect();
-      return { x: r.left - wr.left + r.width / 2, y: r.top - wr.top + r.height / 2, w: r.width, h: r.height };
+      return {
+        x: r.left - wr.left + r.width / 2,
+        y: r.top - wr.top + r.height / 2,
+        w: r.width,
+        h: r.height,
+      };
     };
 
     const chip = refs.chip.current;
@@ -109,10 +135,8 @@ function useMeasurePorts(wrapperRef, refs) {
     const c = centerOf(R1);
     const d = centerOf(R2);
 
-    // “Ports”: borde interno de cada card (no el centro)
-    const portLeft = (card) => ({ x: card.x + card.w / 2 + card.w / 2 - 8, y: card.y }); // derecha del card
-    const portRight = (card) => ({ x: card.x - card.w / 2 + 8, y: card.y }); // izquierda del card
-
+    const portLeft = (card) => ({ x: card.x + card.w / 2 - 8, y: card.y }); // right edge
+    const portRight = (card) => ({ x: card.x - card.w / 2 + 8, y: card.y }); // left edge
     // target del chip: un poco hacia el lado para que se sienta natural
     const chipLeft = { x: chipC.x - chipC.w * 0.18, y: chipC.y };
     const chipRight = { x: chipC.x + chipC.w * 0.18, y: chipC.y };
@@ -124,9 +148,15 @@ function useMeasurePorts(wrapperRef, refs) {
       targets: { chipLeft, chipRight },
       ports: {
         intelligence: { from: portLeft(a), to: chipLeft },
-        predict: { from: portLeft(b), to: { x: chipLeft.x, y: chipLeft.y + chipC.h * 0.18 } },
+        predict: {
+          from: portLeft(b),
+          to: { x: chipLeft.x, y: chipLeft.y + chipC.h * 0.18 },
+        },
         product: { from: portRight(c), to: chipRight },
-        automation: { from: portRight(d), to: { x: chipRight.x, y: chipRight.y + chipC.h * 0.18 } },
+        automation: {
+          from: portRight(d),
+          to: { x: chipRight.x, y: chipRight.y + chipC.h * 0.18 },
+        },
       },
     });
   };
@@ -203,29 +233,36 @@ const Stack = () => {
   const m = useMeasurePorts(wrapRef, refs);
 
   return (
-    <section className="relative min-h-screen w-full bg-[#0b0f16] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen w-full bg-[#ffffff] flex items-center justify-center overflow-hidden" id="stack">
       {/* background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-28 left-10 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
         <div className="absolute -bottom-32 right-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/60" />
+        <div className="absolute inset-0 bg-[#474B4E]" />
       </div>
 
       <div className="relative w-full max-w-6xl px-6 py-16">
         <div className="text-center">
-          <div className="text-white/90 text-sm font-semibold tracking-widest">THE STACK</div>
-          <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Everything connects to the core
+          <div className="text-white/90 text-sm font-semibold tracking-widest mt-12">
+            TECNOLOGÍAS
+          </div>
+          <h2 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[#C0FDB9]">
+            Todo está conectado
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-white/65">
-            Neon wiring. Clean glass. Structured stack.
+            En DZE usamos tecnología de última generación para llevar tu negocio al siguiente nivel.
           </p>
         </div>
 
         <div ref={wrapRef} className="relative mt-12">
           {/* SVG Connections */}
           {m && (
-            <svg className="pointer-events-none absolute inset-0" width={m.w} height={m.h} viewBox={`0 0 ${m.w} ${m.h}`}>
+            <svg
+              className="pointer-events-none absolute inset-0"
+              width={m.w}
+              height={m.h}
+              viewBox={`0 0 ${m.w} ${m.h}`}
+            >
               <defs>
                 <linearGradient id="wire" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0" stopColor="rgba(34,211,238,0.08)" />
@@ -258,13 +295,35 @@ const Stack = () => {
                 return (
                   <g key={key} filter="url(#softGlow)" opacity={0.95}>
                     {/* halo */}
-                    <path d={d} fill="none" stroke="rgba(34,211,238,0.14)" strokeWidth="9" strokeLinecap="round" />
+                    <path
+                      d={d}
+                      fill="none"
+                      stroke="rgba(34,211,238,0.14)"
+                      strokeWidth="9"
+                      strokeLinecap="round"
+                    />
                     {/* main */}
-                    <path d={d} fill="none" stroke="url(#wire)" strokeWidth="2" strokeLinecap="round" />
+                    <path
+                      d={d}
+                      fill="none"
+                      stroke="url(#wire)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
 
                     {/* endpoint nodes */}
-                    <circle cx={seg.from.x} cy={seg.from.y} r="3.2" fill="rgba(34,211,238,0.9)" />
-                    <circle cx={seg.to.x} cy={seg.to.y} r="3.2" fill="rgba(34,211,238,0.9)" />
+                    <circle
+                      cx={seg.from.x}
+                      cy={seg.from.y}
+                      r="3.2"
+                      fill="rgba(34,211,238,0.9)"
+                    />
+                    <circle
+                      cx={seg.to.x}
+                      cy={seg.to.y}
+                      r="3.2"
+                      fill="rgba(34,211,238,0.9)"
+                    />
                   </g>
                 );
               })}
@@ -274,8 +333,18 @@ const Stack = () => {
           {/* layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
             <div className="space-y-6">
-              <StackCard ref={refs.intelligence} title={STACK[0].title} items={STACK[0].items} side="left" />
-              <StackCard ref={refs.predict} title={STACK[2].title} items={STACK[2].items} side="left" />
+              <StackCard
+                ref={refs.intelligence}
+                title={STACK[0].title}
+                items={STACK[0].items}
+                side="left"
+              />
+              <StackCard
+                ref={refs.predict}
+                title={STACK[2].title}
+                items={STACK[2].items}
+                side="left"
+              />
             </div>
 
             <div className="flex justify-center">
@@ -283,8 +352,18 @@ const Stack = () => {
             </div>
 
             <div className="space-y-6">
-              <StackCard ref={refs.product} title={STACK[1].title} items={STACK[1].items} side="right" />
-              <StackCard ref={refs.automation} title={STACK[3].title} items={STACK[3].items} side="right" />
+              <StackCard
+                ref={refs.product}
+                title={STACK[1].title}
+                items={STACK[1].items}
+                side="right"
+              />
+              <StackCard
+                ref={refs.automation}
+                title={STACK[3].title}
+                items={STACK[3].items}
+                side="right"
+              />
             </div>
           </div>
         </div>

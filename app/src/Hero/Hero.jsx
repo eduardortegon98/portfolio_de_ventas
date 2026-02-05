@@ -24,8 +24,8 @@ const Hero = () => {
               {/* glow */}
               <span className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-gradient-to-r from-cyan-400/35 via-sky-400/30 to-blue-500/25" />
               {/* text */}
-              <span className="bg-gradient-to-r from-cyan-200 via-cyan-300 to-sky-200 bg-clip-text text-transparent drop-shadow-[0_0_28px_rgba(34,211,238,0.25)]">
-                Building the bridge between
+              <span className="text-[#C0FDB9]">
+                Impulsamos tu marca usando
               </span>
             </span>
             <br />
@@ -33,27 +33,41 @@ const Hero = () => {
               {/* subtle highlight line */}
               <span className="absolute left-0 right-0 -bottom-3 h-[2px] bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent blur-[0.3px]" />
               <span className="text-white/95">
-                Hardware <span className="text-cyan-200">&</span> Software
+                Hardware <span className="text-[#C0FDB9]">&</span> Software
               </span>
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="mx-auto mt-6 max-w-2xl text-white/75 text-base sm:text-lg">
-            High-performance experiences with a clean, modern edge — powered by
-            fluent interfaces and reliable engineering.
+            Tu negocio merece soluciones tecnológicas innovadoras, atractivas y faciles de usar, en DZE Tech las hacemos realidad. 
           </p>
 
           {/* CTA */}
           <div className="mt-9 flex items-center justify-center gap-3 flex-wrap">
-            <button className="group relative rounded-full px-6 py-2.5 text-sm sm:text-base font-semibold text-black bg-gradient-to-r from-cyan-300 to-sky-200 hover:brightness-110 transition">
+            <button className="group relative rounded-full px-6 py-2.5 text-sm sm:text-base font-semibold text-black bg-[#C0FDB9]/90 hover:brightness-110 transition"
+              onClick={() => {
+                const stackSection = document.getElementById("stack");
+                if (stackSection) {
+                  stackSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
               <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition shadow-[0_0_35px_rgba(34,211,238,0.35)]" />
-              <span className="relative">Get started</span>
+              <span className="relative">Conócenos</span>
             </button>
 
-            <button className="group relative rounded-full px-6 py-2.5 text-sm sm:text-base font-semibold text-cyan-100 border border-cyan-300/25 bg-black/30 backdrop-blur hover:border-cyan-200/60 transition">
+            <button
+              className="group relative rounded-full px-6 py-2.5 text-sm sm:text-base font-semibold text-cyan-100 border border-cyan-300/25 bg-black/30 backdrop-blur hover:border-cyan-200/60 transition"
+              onClick={() => {
+                const projectsSection = document.getElementById("projects");
+                if (projectsSection) {
+                  projectsSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
               <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition shadow-[0_0_30px_rgba(34,211,238,0.25)]" />
-              <span className="relative">See projects</span>
+              <span className="relative">Proyectos</span>
             </button>
           </div>
 
@@ -63,12 +77,15 @@ const Hero = () => {
               aria-label="Scroll down"
               className="group grid place-items-center rounded-full size-10 border border-cyan-300/25 bg-black/30 backdrop-blur hover:border-cyan-200/60 transition shadow-[0_0_22px_rgba(34,211,238,0.12)]"
             >
-              <ChevronDown className="size-5 text-cyan-100/90 group-hover:text-cyan-100 " onClick={() => {
-                const stackSection = document.getElementById('stack');
-                if (stackSection) {
-                  stackSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }} />
+              <ChevronDown
+                className="size-5 text-cyan-100/90 group-hover:text-cyan-100 "
+                onClick={() => {
+                  const stackSection = document.getElementById("stack");
+                  if (stackSection) {
+                    stackSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              />
             </button>
           </div>
         </div>
