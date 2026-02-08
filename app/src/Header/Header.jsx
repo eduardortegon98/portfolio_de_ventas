@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../../public/DZE_Tech.png";
+import Logo from "../../public/Soluciones_Tecnologicas_Ortegon.png";
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
@@ -34,7 +34,7 @@ const Header = () => {
                 <img
                   src={Logo}
                   alt="Soluciones Tecnológicas Ortegón"
-                  className="size-14 rounded-xl object-contain ring-1 ring-white/10"
+                  className="size-24 rounded-xl object-contain  ring-white/10"
                 />
                 <div className="leading-tight">
                   <p className="text-white font-extrabold tracking-tight text-[15px] sm:text-base">
