@@ -212,6 +212,10 @@ function curvedPath(from, to) {
 }
 
 const ChipCenter = React.forwardRef(function ChipCenter(_, ref) {
+  const imageUrl = `${import.meta.env.BASE_URL}img_stack.png`;
+
+  console.log("BASE_URL:", import.meta.env.BASE_URL);
+  console.log("imageUrl:", imageUrl);
   return (
     <div
       ref={ref}
@@ -221,9 +225,11 @@ const ChipCenter = React.forwardRef(function ChipCenter(_, ref) {
       <div className="pointer-events-none absolute -inset-10 translate-x-6 rounded-full bg-blue-500/10 blur-3xl sm:-inset-16 sm:translate-x-10" />
 
       <img
-        src={`${import.meta.env.BASE_URL}img_stack.png`}
+        src={imageUrl}
         alt="Chip"
-        className="relative h-auto w-full drop-shadow-[0_0_50px_rgba(34,211,238,0.20)]"
+        onLoad={() => console.log("Imagen cargó bien:", imageUrl)}
+        onError={() => console.log("Error cargando imagen:", imageUrl)}
+        className="relative w-full h-auto drop-shadow-[0_0_50px_rgba(34,211,238,0.20)]"
         draggable="false"
       />
 
