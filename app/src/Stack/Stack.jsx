@@ -8,7 +8,7 @@ import {
   Cpu,
   Atom,
   Wind,
- Terminal,
+  Terminal,
   Plug,
 } from "lucide-react";
 
@@ -56,7 +56,7 @@ function clamp(n, a, b) {
 
 const StackCard = React.forwardRef(function StackCard(
   { title, items, side = "left" },
-  ref
+  ref,
 ) {
   const isLeft = side === "left";
 
@@ -213,12 +213,15 @@ function curvedPath(from, to) {
 
 const ChipCenter = React.forwardRef(function ChipCenter(_, ref) {
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-[240px] sm:max-w-[320px] lg:max-w-[520px]">
+    <div
+      ref={ref}
+      className="relative mx-auto w-full max-w-[240px] sm:max-w-[320px] lg:max-w-[520px]"
+    >
       <div className="pointer-events-none absolute -inset-10 rounded-full bg-cyan-400/10 blur-3xl sm:-inset-16" />
       <div className="pointer-events-none absolute -inset-10 translate-x-6 rounded-full bg-blue-500/10 blur-3xl sm:-inset-16 sm:translate-x-10" />
 
       <img
-        src="/img_stack.png"
+        src={`${import.meta.env.BASE_URL}img_stack.png`}
         alt="Chip"
         className="relative h-auto w-full drop-shadow-[0_0_50px_rgba(34,211,238,0.20)]"
         draggable="false"
@@ -269,8 +272,8 @@ const Stack = () => {
           </h2>
 
           <p className="mx-auto mt-3 max-w-2xl px-2 text-sm leading-relaxed text-white/65 sm:text-base">
-            En Soluciones Tecnológicas Ortegón usamos tecnología de última generación para llevar tu negocio
-            al siguiente nivel.
+            En Soluciones Tecnológicas Ortegón usamos tecnología de última
+            generación para llevar tu negocio al siguiente nivel.
           </p>
         </div>
 
@@ -328,8 +331,18 @@ const Stack = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                     />
-                    <circle cx={seg.from.x} cy={seg.from.y} r="3.2" fill="rgba(34,211,238,0.9)" />
-                    <circle cx={seg.to.x} cy={seg.to.y} r="3.2" fill="rgba(34,211,238,0.9)" />
+                    <circle
+                      cx={seg.from.x}
+                      cy={seg.from.y}
+                      r="3.2"
+                      fill="rgba(34,211,238,0.9)"
+                    />
+                    <circle
+                      cx={seg.to.x}
+                      cy={seg.to.y}
+                      r="3.2"
+                      fill="rgba(34,211,238,0.9)"
+                    />
                   </g>
                 );
               })}
