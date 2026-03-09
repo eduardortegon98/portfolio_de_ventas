@@ -8,7 +8,8 @@ const navItems = [
 ];
 
 const Header = () => {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("#inicio");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onHash = () => setActive(window.location.hash || "#inicio");
@@ -17,103 +18,114 @@ const Header = () => {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  useEffect(() => {
+    const onEsc = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50">
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute inset-x-0 -top-10 h-28 bg-gradient-to-r from-cyan-400/15 via-emerald-400/15 to-lime-400/15 blur-3xl" />
+      {/* Glow ligero acorde Hero */}
+      <div className="pointer-events-none absolute inset-x-0 -top-10 h-24 bg-gradient-to-r from-cyan-400/15 via-sky-400/15 to-blue-500/15 blur-3xl" />
 
-      {/* Glass bar */}
-      <div className="bg-[#12141a]/70 backdrop-blur-xl border-b border-white/10">
-        <div className="h-20 flex items-center justify-between px-4 max-w-7xl mx-auto">
-          {/* Brand */}
-          <a href="#inicio" className="group flex items-center gap-3">
-            {/* Logo (opcional) */}
-            <div className="relative">
-              <div className="pointer-events-none absolute -inset-3 rounded-2xl bg-gradient-to-r from-cyan-400/25 via-emerald-400/25 to-lime-400/25 blur-xl opacity-0 group-hover:opacity-100 transition" />
-              <div className="relative flex items-center gap-3 rounded-2xl px-2 py-1">
-                <img
-                  src={Logo}
-                  alt="Soluciones Tecnológicas Ortegón"
-                  className="size-24 rounded-xl object-contain  ring-white/10"
-                />
-                <div className="leading-tight">
-                  <p className="text-white font-extrabold tracking-tight text-[15px] sm:text-base">
-                    Soluciones Tecnológicas Ortegón
-                  </p>
-                  <p className="text-white/70 text-xs sm:text-[13px] -mt-0.5">
-                    Soporte • Redes • Sistemas
-                  </p>
-                </div>
+      {/* Barra principal */}
+      <div className="bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex h-20 items-center justify-between">
+
+            {/* Branding */}
+            <a
+              href="#inicio"
+              className="flex items-center gap-3"
+              onClick={() => setOpen(false)}
+            >
+              <img
+                src={Logo}
+                alt="Soluciones Tecnológicas Ortegón"
+                className="h-12 w-12 rounded-xl border-2 border-[#C0FDB9] object-contain shadow-md"
+              />
+              <div className="text-white">
+                <p className="text-lg font-extrabold tracking-tight">
+                  Soluciones Tecnológicas
+                </p>
+                <p className="text-sm text-[#C0FDB9]/90">Soporte • Redes • Sistemas</p>
               </div>
-            </div>
-          </a>
+            </a>
 
-          {/* Right side */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Nav */}
-            <nav className="hidden sm:flex items-center gap-1">
+            {/* Desktop Nav + CTA */}
+            <div className="hidden md:flex items-center gap-6">
+
+              <nav className="flex items-center gap-4">
+                {navItems.map((item) => {
+                  const isActive = active === item.href;
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className={[
+                        "relative px-3 py-2 font-medium transition-all duration-200",
+                        isActive
+                          ? "text-[#C0FDB9] underline decoration-[#C0FDB9]/70 underline-offset-4"
+                          : "text-white/70 hover:text-[#C0FDB9] hover:underline hover:decoration-cyan-300",
+                      ].join(" ")}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
+              </nav>
+
+              <a
+                href="#contacto"
+                className="
+                  px-5 py-2.5 text-sm font-bold
+                  bg-[#C0FDB9] text-black
+                  rounded-full shadow-lg
+                  hover:brightness-110 transition
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0FDB9]/50
+                "
+              >
+                Cotizar
+              </a>
+            </div>
+
+            {/* Mobile Toggle */}
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="md:hidden text-white text-2xl focus:outline-none"
+            >
+              {open ? "✕" : "☰"}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {open && (
+          <div className="md:hidden bg-black/90 backdrop-blur-lg border-t border-white/20">
+            <nav className="flex flex-col gap-2 px-4 py-4">
               {navItems.map((item) => {
                 const isActive = active === item.href;
-
                 return (
                   <a
                     key={item.href}
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className={[
-                      "group relative px-3 py-2 rounded-xl text-sm font-semibold transition",
-                      "hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200/60",
-                      isActive ? "text-white" : "text-white/75 hover:text-white",
+                      "block px-3 py-2 rounded-lg text-sm font-semibold transition",
+                      isActive
+                        ? "bg-[#C0FDB9]/30 text-[#C0FDB9]"
+                        : "text-white/80 hover:bg-white/10 hover:text-white",
                     ].join(" ")}
                   >
-                    {/* underline glow */}
-                    <span
-                      className={[
-                        "pointer-events-none absolute left-3 right-3 -bottom-0.5 h-px",
-                        "bg-gradient-to-r from-transparent via-emerald-200/80 to-transparent transition",
-                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-                      ].join(" ")}
-                    />
-                    <span
-                      className={[
-                        "relative",
-                        isActive
-                          ? "drop-shadow-[0_0_12px_rgba(52,211,153,0.35)]"
-                          : "group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.25)]",
-                      ].join(" ")}
-                    >
-                      {item.label}
-                    </span>
+                    {item.label}
                   </a>
                 );
               })}
             </nav>
-
-            {/* CTA */}
-            <a
-              href="#contacto"
-              className="
-                inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-bold
-                text-black
-                bg-[#C0FDB9]/90 backdrop-blur
-                shadow-[0_10px_30px_-12px_rgba(16,185,129,0.55)]
-                hover:brightness-110 transition
-                focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/70
-              "
-            >
-              Cotizar
-              <span className="opacity-90">→</span>
-            </a>
-
-            {/* Mobile menu hint (simple) */}
-            <a
-              href="#info"
-              className="sm:hidden inline-flex items-center justify-center rounded-2xl px-3 py-2 text-white/80 hover:text-white hover:bg-white/5 transition"
-              aria-label="Ir a Info"
-            >
-              ☰
-            </a>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );

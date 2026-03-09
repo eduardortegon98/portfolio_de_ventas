@@ -1,5 +1,16 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Code2, BrainCircuit, Bot, Layers3, Orbit, Globe, Cpu, Atom, Wind, Terminal, Plug } from "lucide-react";
+import {
+  BrainCircuit,
+  Bot,
+  Layers3,
+  Orbit,
+  Globe,
+  Cpu,
+  Atom,
+  Wind,
+ Terminal,
+  Plug,
+} from "lucide-react";
 
 const STACK = [
   {
@@ -7,17 +18,17 @@ const STACK = [
     title: "DESARROLLO",
     items: [
       { label: "Web", Icon: Globe },
-  { label: "IA", Icon: BrainCircuit },
-  { label: "Dispositivos Electrónicos", Icon: Cpu },
+      { label: "IA", Icon: BrainCircuit },
+      { label: "Dispositivos Electrónicos", Icon: Cpu },
     ],
   },
   {
     key: "technologies",
     title: "TECNOLOGÍAS",
     items: [
-       { label: "React", Icon: Atom },
-  { label: "Tailwind CSS", Icon: Wind },
-  { label: "Python", Icon: Terminal },
+      { label: "React", Icon: Atom },
+      { label: "Tailwind CSS", Icon: Wind },
+      { label: "Python", Icon: Terminal },
     ],
   },
   {
@@ -26,7 +37,7 @@ const STACK = [
     items: [
       { label: "Modelos", Icon: BrainCircuit },
       { label: "Análisis de Datos", Icon: Layers3 },
-      { label: "Simulaciones", Icon: Orbit }
+      { label: "Simulaciones", Icon: Orbit },
     ],
   },
   {
@@ -35,7 +46,6 @@ const STACK = [
     items: [
       { label: "Integraciones", Icon: Plug },
       { label: "Agentes", Icon: Bot },
-
     ],
   },
 ];
@@ -46,56 +56,65 @@ function clamp(n, a, b) {
 
 const StackCard = React.forwardRef(function StackCard(
   { title, items, side = "left" },
-  ref,
+  ref
 ) {
-  // side: "left" | "right" -> para colocar el puerto del lado interno
   const isLeft = side === "left";
 
   return (
     <div
       ref={ref}
-      className="group relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md
-                 px-6 py-5 shadow-[0_0_60px_rgba(0,0,0,0.35)]
-                 transition will-change-transform hover:-translate-y-0.5 hover:border-cyan-200/25"
+      className="
+        group relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md
+        px-4 py-4 sm:px-5 sm:py-5 lg:px-6
+        shadow-[0_0_60px_rgba(0,0,0,0.35)]
+        transition will-change-transform hover:-translate-y-0.5 hover:border-cyan-200/25
+      "
     >
-      {/* top highlight */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent" />
 
-      {/* internal port (dot) */}
+      {/* Puerto visible solo en desktop */}
       <div
         className={[
-          "pointer-events-none absolute top-1/2 -translate-y-1/2",
+          "pointer-events-none absolute top-1/2 hidden -translate-y-1/2 lg:block",
           isLeft ? "-right-2" : "-left-2",
         ].join(" ")}
       >
         <div className="relative size-4">
-          <div className="absolute inset-0 rounded-full bg-cyan-200/70 blur-[6px] opacity-0 group-hover:opacity-100 transition" />
+          <div className="absolute inset-0 rounded-full bg-cyan-200/70 blur-[6px] opacity-0 transition group-hover:opacity-100" />
           <div className="absolute inset-0 rounded-full bg-cyan-200/40 blur-[10px] opacity-60" />
           <div className="absolute inset-[3px] rounded-full bg-cyan-200 shadow-[0_0_16px_rgba(34,211,238,0.55)]" />
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="text-[11px] font-semibold tracking-[0.24em] text-white/60">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] sm:tracking-[0.24em] text-white/60">
           {title}
         </div>
-        <div className="h-px w-16 bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent" />
+        <div className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent" />
       </div>
 
       <div className="mt-4 space-y-3">
         {items.map(({ label, Icon }, idx) => (
           <div
             key={idx}
-            className="flex items-center gap-3 rounded-xl border border-cyan-300/10 bg-black/30 px-4 py-3
-                       transition group-hover:border-cyan-200/15"
+            className="
+              flex items-center gap-3 rounded-xl border border-cyan-300/10 bg-black/30
+              px-3 py-3 sm:px-4
+              transition group-hover:border-cyan-200/15
+            "
           >
             <div
-              className="grid place-items-center size-10 rounded-xl bg-cyan-400/10 border border-cyan-300/15 text-cyan-100
-                            shadow-[0_0_18px_rgba(34,211,238,0.10)]"
+              className="
+                grid size-9 shrink-0 place-items-center rounded-xl border border-cyan-300/15
+                bg-cyan-400/10 text-cyan-100 shadow-[0_0_18px_rgba(34,211,238,0.10)]
+                sm:size-10
+              "
             >
-              <Icon className="size-6" />
+              <Icon className="size-5 sm:size-6" />
             </div>
-            <div className="text-white/90 font-medium">{label}</div>
+            <div className="text-sm sm:text-base font-medium text-white/90">
+              {label}
+            </div>
           </div>
         ))}
       </div>
@@ -135,9 +154,9 @@ function useMeasurePorts(wrapperRef, refs) {
     const c = centerOf(R1);
     const d = centerOf(R2);
 
-    const portLeft = (card) => ({ x: card.x + card.w / 2 - 8, y: card.y }); // right edge
-    const portRight = (card) => ({ x: card.x - card.w / 2 + 8, y: card.y }); // left edge
-    // target del chip: un poco hacia el lado para que se sienta natural
+    const portLeft = (card) => ({ x: card.x + card.w / 2 - 8, y: card.y });
+    const portRight = (card) => ({ x: card.x - card.w / 2 + 8, y: card.y });
+
     const chipLeft = { x: chipC.x - chipC.w * 0.18, y: chipC.y };
     const chipRight = { x: chipC.x + chipC.w * 0.18, y: chipC.y };
 
@@ -163,7 +182,6 @@ function useMeasurePorts(wrapperRef, refs) {
 
   useLayoutEffect(() => {
     measure();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -174,19 +192,18 @@ function useMeasurePorts(wrapperRef, refs) {
     if (wrapperRef.current) ro.observe(wrapperRef.current);
 
     const t = setTimeout(measure, 80);
+
     return () => {
       clearTimeout(t);
       ro.disconnect();
       window.removeEventListener("resize", onResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return data;
 }
 
 function curvedPath(from, to) {
-  // Curva suave tipo “cable”
   const dx = clamp(Math.abs(to.x - from.x) * 0.35, 80, 220);
   const dir = to.x > from.x ? 1 : -1;
   const c1 = { x: from.x + dx * dir, y: from.y };
@@ -196,20 +213,17 @@ function curvedPath(from, to) {
 
 const ChipCenter = React.forwardRef(function ChipCenter(_, ref) {
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-[520px]">
-      {/* aura */}
-      <div className="pointer-events-none absolute -inset-16 rounded-full bg-cyan-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute -inset-16 translate-x-10 rounded-full bg-blue-500/10 blur-3xl" />
+    <div ref={ref} className="relative mx-auto w-full max-w-[240px] sm:max-w-[320px] lg:max-w-[520px]">
+      <div className="pointer-events-none absolute -inset-10 rounded-full bg-cyan-400/10 blur-3xl sm:-inset-16" />
+      <div className="pointer-events-none absolute -inset-10 translate-x-6 rounded-full bg-blue-500/10 blur-3xl sm:-inset-16 sm:translate-x-10" />
 
-      {/* chip image from /public */}
       <img
         src="/img_stack.png"
         alt="Chip"
-        className="relative w-full h-auto drop-shadow-[0_0_50px_rgba(34,211,238,0.20)]"
+        className="relative h-auto w-full drop-shadow-[0_0_50px_rgba(34,211,238,0.20)]"
         draggable="false"
       />
 
-      {/* target rings */}
       <div className="pointer-events-none absolute inset-0 grid place-items-center">
         <div className="h-[96%] w-[96%] rounded-full border border-cyan-300/10" />
         <div className="absolute h-[78%] w-[78%] rounded-full border border-cyan-300/10" />
@@ -233,32 +247,38 @@ const Stack = () => {
   const m = useMeasurePorts(wrapRef, refs);
 
   return (
-    <section className="relative h-screen w-full bg-[#ffffff] flex items-center justify-center overflow-hidden" id="stack">
+    <section
+      className="relative w-full overflow-hidden bg-[#474B4E] py-16 sm:py-20 lg:min-h-screen lg:py-24"
+      id="stack"
+    >
       {/* background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-28 left-10 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="absolute -bottom-32 right-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute -top-28 left-6 h-52 w-52 rounded-full bg-cyan-400/10 blur-3xl sm:left-10 sm:h-72 sm:w-72" />
+        <div className="absolute -bottom-32 right-6 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl sm:right-10 sm:h-80 sm:w-80" />
         <div className="absolute inset-0 bg-[#474B4E]" />
       </div>
 
-      <div className="relative w-full max-w-6xl px-6 py-16">
+      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <div className="text-white/90 text-sm font-semibold tracking-widest mt-12">
+          <div className="mt-4 text-xs sm:text-sm font-semibold tracking-[0.28em] text-white/90">
             TECNOLOGÍAS
           </div>
-          <h2 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[#C0FDB9]">
+
+          <h2 className="mt-3 font-extrabold tracking-tight text-[#C0FDB9] text-[clamp(1.9rem,5vw,3.4rem)]">
             Todo está conectado
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-white/65">
-            En DZE usamos tecnología de última generación para llevar tu negocio al siguiente nivel.
+
+          <p className="mx-auto mt-3 max-w-2xl px-2 text-sm leading-relaxed text-white/65 sm:text-base">
+            En Soluciones Tecnológicas Ortegón usamos tecnología de última generación para llevar tu negocio
+            al siguiente nivel.
           </p>
         </div>
 
-        <div ref={wrapRef} className="relative mt-12">
-          {/* SVG Connections */}
+        <div ref={wrapRef} className="relative mt-10 sm:mt-14">
+          {/* SVG solo desktop */}
           {m && (
             <svg
-              className="pointer-events-none absolute inset-0"
+              className="pointer-events-none absolute inset-0 hidden lg:block"
               width={m.w}
               height={m.h}
               viewBox={`0 0 ${m.w} ${m.h}`}
@@ -294,7 +314,6 @@ const Stack = () => {
 
                 return (
                   <g key={key} filter="url(#softGlow)" opacity={0.95}>
-                    {/* halo */}
                     <path
                       d={d}
                       fill="none"
@@ -302,7 +321,6 @@ const Stack = () => {
                       strokeWidth="9"
                       strokeLinecap="round"
                     />
-                    {/* main */}
                     <path
                       d={d}
                       fill="none"
@@ -310,29 +328,17 @@ const Stack = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                     />
-
-                    {/* endpoint nodes */}
-                    <circle
-                      cx={seg.from.x}
-                      cy={seg.from.y}
-                      r="3.2"
-                      fill="rgba(34,211,238,0.9)"
-                    />
-                    <circle
-                      cx={seg.to.x}
-                      cy={seg.to.y}
-                      r="3.2"
-                      fill="rgba(34,211,238,0.9)"
-                    />
+                    <circle cx={seg.from.x} cy={seg.from.y} r="3.2" fill="rgba(34,211,238,0.9)" />
+                    <circle cx={seg.to.x} cy={seg.to.y} r="3.2" fill="rgba(34,211,238,0.9)" />
                   </g>
                 );
               })}
             </svg>
           )}
 
-          {/* layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            <div className="space-y-6">
+          {/* layout responsive */}
+          <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-3 lg:gap-8">
+            <div className="order-2 space-y-5 lg:order-1 lg:space-y-6">
               <StackCard
                 ref={refs.intelligence}
                 title={STACK[0].title}
@@ -347,11 +353,11 @@ const Stack = () => {
               />
             </div>
 
-            <div className="flex justify-center">
+            <div className="order-1 flex justify-center lg:order-2">
               <ChipCenter ref={refs.chip} />
             </div>
 
-            <div className="space-y-6">
+            <div className="order-3 space-y-5 lg:space-y-6">
               <StackCard
                 ref={refs.product}
                 title={STACK[1].title}
