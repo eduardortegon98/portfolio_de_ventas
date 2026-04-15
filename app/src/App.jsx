@@ -1,25 +1,58 @@
-import { useState } from "react";
-import Header from "./Header/Header.jsx";
-import Hero from "./Hero/Hero.jsx";
-import Stack from "./Stack/Stack.jsx";
-import Projects from "./Projects/Projects.jsx";
-import Footer from "./Footer/Footer.jsx";
-import Walkie from "./Walkie/Walkie.jsx";
-import Quotes from "./Quote/Quotes.jsx";
+import { Suspense, lazy, memo } from "react";
 import "./App.css";
+import useInViewOnce from "./hooks/useInViewOnce";
 
-function App() {
-  const [count, setCount] = useState(0);
+const Header = lazy(() => import("./Header/Header.jsx"));
+const Hero = lazy(() => import("./Hero/Hero.jsx"));
+const Stack = lazy(() => import("./Stack/Stack.jsx"));
+const Projects = lazy(() => import("./Projects/Projects.jsx"));
+const Footer = lazy(() => import("./Footer/Footer.jsx"));
+const Walkie = lazy(() => import("./Walkie/Walkie.jsx"));
+const FeedBack = lazy(() => import("./FeedBack/FeedBack.jsx"));
+const Quotes = lazy(() => import("./Quote/Quotes.jsx"));
+
+const DeferredSection = memo(function DeferredSection({
+  children,
+  minHeight = 400,
+  rootMargin = "250px 0px",
+}) {
+  const { ref, inView } = useInViewOnce({ rootMargin });
 
   return (
+    <section ref={ref} style={{ minHeight }}>
+      {inView ? <Suspense fallback={null}>{children}</Suspense> : null}
+    </section>
+  );
+});
+
+function App() {
+  return (
     <>
-      <Header />
-      <Hero />
-      <Stack />
-      <Projects />
-      <Quotes />
-      <Footer />
-      <Walkie />
+      <Suspense fallback={null}>
+        <Header />
+        <Hero />
+      </Suspense>
+
+      <DeferredSection minHeight={720} rootMargin="300px 0px">
+        <Stack />
+      </DeferredSection>
+
+      <DeferredSection minHeight={720} rootMargin="300px 0px">
+        <Projects />
+      </DeferredSection>
+
+      <DeferredSection minHeight={760} rootMargin="220px 0px">
+        <FeedBack />
+      </DeferredSection>
+
+      <DeferredSection minHeight={520} rootMargin="220px 0px">
+        <Quotes />
+      </DeferredSection>
+
+      <Suspense fallback={null}>
+        <Footer />
+        <Walkie />
+      </Suspense>
     </>
   );
 }

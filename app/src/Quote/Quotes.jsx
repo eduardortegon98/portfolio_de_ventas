@@ -1,24 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 
-const Background = () => (
-  <div className="pointer-events-none absolute inset-0">
-    <div className="absolute -top-20 left-4 h-40 w-40 rounded-full bg-cyan-400/10 blur-3xl sm:-top-24 sm:left-8 sm:h-56 sm:w-56 lg:-top-28 lg:left-10 lg:h-72 lg:w-72" />
-    <div className="absolute -bottom-24 right-4 h-44 w-44 rounded-full bg-blue-500/10 blur-3xl sm:-bottom-28 sm:right-8 sm:h-60 sm:w-60 lg:-bottom-32 lg:right-10 lg:h-80 lg:w-80" />
-    <div className="absolute inset-0 bg-[#474B4E]" />
-  </div>
-);
+const QUOTE =
+  "La IA es una herramienta, no un destino: el juicio, la ética y la creatividad siguen siendo tuyos.";
+const AUTHOR = "— Anónimo";
+
+const Background = memo(function Background() {
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <div className="absolute -top-20 left-4 h-32 w-32 rounded-full bg-cyan-400/10 blur-2xl sm:h-44 sm:w-44 lg:h-56 lg:w-56" />
+      <div className="absolute -bottom-20 right-4 h-36 w-36 rounded-full bg-blue-500/10 blur-2xl sm:h-48 sm:w-48 lg:h-60 lg:w-60" />
+      <div className="absolute inset-0 bg-[#474B4E]" />
+    </div>
+  );
+});
 
 export default function Quotes() {
-  const quote =
-    "La IA es una herramienta, no un destino: el juicio, la ética y la creatividad siguen siendo tuyos.";
-  const author = "— Anónimo";
-
   const sectionRef = useRef(null);
   const [started, setStarted] = useState(false);
-
-  const [typedQuote, setTypedQuote] = useState("");
-  const [typedAuthor, setTypedAuthor] = useState("");
-  const [doneQuote, setDoneQuote] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [authorIndex, setAuthorIndex] = useState(0);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -41,51 +41,49 @@ export default function Quotes() {
   useEffect(() => {
     if (!started) return;
 
-    setTypedQuote("");
-    setTypedAuthor("");
-    setDoneQuote(false);
+    let quoteTimer;
+    let authorTimer;
 
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setTypedQuote(quote.slice(0, i));
+    quoteTimer = setInterval(() => {
+      setQuoteIndex((prev) => {
+        if (prev >= QUOTE.length) {
+          clearInterval(quoteTimer);
 
-      if (i >= quote.length) {
-        clearInterval(interval);
-        setDoneQuote(true);
-      }
+          authorTimer = setInterval(() => {
+            setAuthorIndex((aPrev) => {
+              if (aPrev >= AUTHOR.length) {
+                clearInterval(authorTimer);
+                return aPrev;
+              }
+              return aPrev + 1;
+            });
+          }, 80);
+
+          return prev;
+        }
+
+        return prev + 1;
+      });
     }, 55);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(quoteTimer);
+      clearInterval(authorTimer);
+    };
   }, [started]);
 
-  useEffect(() => {
-    if (!started || !doneQuote) return;
+  const typedQuote = useMemo(() => QUOTE.slice(0, quoteIndex), [quoteIndex]);
+  const typedAuthor = useMemo(() => AUTHOR.slice(0, authorIndex), [authorIndex]);
 
-    let j = 0;
-    const interval = setInterval(() => {
-      j++;
-      setTypedAuthor(author.slice(0, j));
-      if (j >= author.length) clearInterval(interval);
-    }, 80);
-
-    return () => clearInterval(interval);
-  }, [started, doneQuote]);
+  const showCursor = started && authorIndex < AUTHOR.length;
 
   return (
     <section
       ref={sectionRef}
-      id="projects"
+      id="quotes"
       className="relative flex min-h-[70svh] w-full items-center justify-center overflow-hidden bg-[#474B4E] px-4 py-16 sm:min-h-[80svh] sm:px-6 sm:py-20 lg:min-h-screen lg:px-8"
     >
       <Background />
-
-      <style>{`
-        @keyframes blink {
-          0%, 49% { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-      `}</style>
 
       <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
         <div className="italianno-regular text-[#C0FDB9]">
@@ -93,18 +91,8 @@ export default function Quotes() {
             {typedQuote}
           </span>
 
-          {started && (
-            <span
-              className="ml-1 inline-block align-baseline sm:ml-2"
-              style={{
-                width: "0.9ch",
-                height: "0.05em",
-                backgroundColor: "currentColor",
-                borderRadius: "2px",
-                transform: "translateY(0.18em)",
-                animation: "blink 0.9s steps(1, end) infinite",
-              }}
-            />
+          {showCursor && (
+            <span className="typing-cursor ml-1 inline-block align-baseline sm:ml-2" />
           )}
 
           <span className="mt-4 block text-[clamp(1rem,2.8vw,2rem)] opacity-90 sm:mt-5">
